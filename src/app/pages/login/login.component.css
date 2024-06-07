@@ -1,0 +1,17 @@
+
+#sign_in {
+   display: flex;
+   justify-content: center;
+   margin: 250px auto auto auto;
+}
+
+input {
+    width: 275px;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    left: 20px;
+}

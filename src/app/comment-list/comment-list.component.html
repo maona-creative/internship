@@ -1,0 +1,46 @@
+<p>comment-list works!</p>
+
+<!--<div class="comment-list">
+    <h2>Comments</h2>
+    <table>
+    <thead>
+    <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Body</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let comment of comments">
+    <td>{{ comment.id }}</td>
+    <td>{{ comment.name }}</td>
+    <td>{{ comment.email }}</td>
+    <td>{{ comment.body }}</td>
+    </tr>
+    </tbody>
+    </table>
+   </div> -->
+
+   <p-table 
+   [value]="comments"
+   [tableStyle]="{ 'min-width': '50rem' }">
+
+    <ng-template pTemplate="header">
+   <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Body</th>
+    </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-comment>
+        <tr>
+        <td>{{ comment.id }}</td>
+        <td>{{ comment.name }}</td>
+        <td>{{ comment.email }}</td>
+        <td>{{ comment.body }}</td>
+</tr>
+    </ng-template>
+    </p-table> 

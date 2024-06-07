@@ -1,0 +1,12 @@
+<div id="sign_in" class="flex flex-column gap-2">
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" >
+    <p><label for="username">Username:</label>
+    <input type="text" pInputText [autofocus]="true"  formControlName="text" formControlName="username" /></p>
+    
+    <label id="psw" name="psw">Password:</label>
+    <p-password [toggleMask]="true"><input type="text" formControlName="password" /></p-password> 
+    <p class="button"><button id="submit"  pButton pRipple label="Submit" class="p-button-success"  [rounded]="true" ></button></p>
+   
+    
+</form>
+</div>
