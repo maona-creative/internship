@@ -14,6 +14,8 @@ export class TableService {
   constructor(private http: HttpClient) { }
 
   getComments(): Observable<Comment[]> {
+    
     return this.http.get<Comment[]>(`${this.baseUrl}/comments`);
+    
     }
 }

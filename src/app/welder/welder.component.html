@@ -1,0 +1,89 @@
+<p>welder works!</p>
+
+<p-table 
+   #dt2
+   [value]="welders"
+   dataKey="id"
+   [rows]="10"
+   [rowsPerPageOptions]="[10, 25, 50]"
+   styleClass="p-datatable-gridlines"
+   [loading]="loading"
+   [paginator]="true"
+   [tableStyle]="{ 'min-width': '50rem' }"
+   [globalFilterFields]="['id', 'Super_First_name', 'Super_Surname', 'Super_mail', 'Desired_Job_Categor',
+    'Desired_position', 'Super_Telephone', 'asap', 'Comment_1'
+   ]">
+   
+  <!-- <ng-template pTemplate="caption">
+    <div class="flex">
+       <p-iconField iconPosition="left" class="ml-auto">
+            <p-inputIcon>
+                <i class="pi pi-search"></i>
+            </p-inputIcon>  
+            <input 
+                pInputText 
+                type="text" 
+               (input)="dt2.filterGlobal($event.target.value, 'contains')" 
+                placeholder="Search keyword" />
+        </p-iconField>
+    </div> 
+</ng-template> -->
+   
+<ng-template pTemplate="caption">
+    <div class="flex">
+        <p-iconField iconPosition="left" class="ml-auto">
+             <p-inputIcon>
+                 <i class="pi pi-search"></i>
+             </p-inputIcon>  
+        <input 
+            pInputText 
+            type="text" 
+            (input)="dt2.filterGlobal($any($event.target).value, 'contains')" 
+            placeholder="Search keyword" 
+            style="width: 50%;"
+        />
+    </p-iconField>
+    </div>
+</ng-template>
+   
+   <ng-template pTemplate="header">
+   <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Surname</th>
+    <th>Email</th>
+    <th>Desired job Category</th>
+    <th>Desired position</th>
+    <th>Telephone</th>
+    <th>ASAP</th>
+    <th>Comment</th>
+    </tr>
+   
+
+    </ng-template>
+
+    <ng-template pTemplate="body" let-welder>
+        <tr>
+        <td>{{ welder.id }}</td>
+        <td>{{ welder.Super_First_name }}</td>
+        <td>{{ welder.Super_Surname }}</td>
+        <td>{{ welder.Super_mail }}</td>
+        <td>{{ welder.Desired_Job_Category }}</td>
+        <td>{{ welder.Desired_position }}</td>
+        <td>{{ welder.Super_Telephone }}</td>
+        <td>
+            <input type="checkbox" [(ngModel)]="welder.asap" />
+        </td>
+        <td><textarea 
+            rows="3"
+            cols="30" 
+            pInputTextarea [(ngModel)]="welder.Comment_1"></textarea></td>
+
+</tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="9">No welders found.</td>
+        </tr>
+    </ng-template>
+    </p-table>

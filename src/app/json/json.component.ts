@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './json.component.html',
   styleUrl: './json.component.css'
 })
-export class JsonComponent implements OnInit {
+export class JsonComponent implements OnInit  {
   users: any[] = [];
 
   constructor(private http: HttpClient) {}

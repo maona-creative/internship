@@ -1,0 +1,43 @@
+{
+    "welders": [
+      {
+        "id": 1,
+        "Super_First_name": "John",
+        "Super_Surname": "Osipov",
+        "Super_mail": "john@example.com",
+        "Desired_Job_Category": "Tööstus / Tootmine",
+        "Desired_position": "Keevitaja, Metallitööline, Tööstuse lihttööline, Tootmistööline.",
+        "Super_Telephone": "372 54 614 034",
+        "asap": true,
+        "Comment_1": null
+
+      },
+      {
+        "id": 2,
+        "Super_First_name": "Jane",
+        "Super_Surname": "Datov",
+        "Super_mail": "jane@example.com",
+        "Desired_Job_Category": "Промышленность / Производство",
+        "Desired_position": "Сварщик",
+        "Super_Telephone": "372 54 614 034",
+        "asap": true,
+        "Comment_1": null
+    
+      },
+      {
+        "id": 3,
+        "Super_First_name": "Igor",
+        "Super_Surname": "Leipkans",
+        "Super_mail": "john@example.com",
+        "Desired_Job_Category": "Tööstus / Tootmine",
+        "Desired_position": "Keevitaja, Metallitööline, Tööstuse lihttööline, Tootmistööline.",
+        "Super_Telephone": "372 54 614 034",
+        "asap": false,
+        "Comment_1": null
+    }
+
+    ]
+  }
+    
+    
+  
