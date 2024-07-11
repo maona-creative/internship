@@ -1,4 +1,10 @@
-<div id="sign_in" class="flex flex-column gap-2">
+
+<div class="link">
+    <a href="/calendar"  class="p-button font-bold pi pi-calendar">Calendar</a>
+</div>
+
+
+<div id="sign_in">
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" >
     <p><label for="username">Username:</label>
     <input type="text" pInputText [autofocus]="true"  formControlName="text" formControlName="username" /></p>
@@ -10,3 +16,4 @@
     
 </form>
 </div>
+

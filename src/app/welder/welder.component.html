@@ -1,5 +1,26 @@
 <p>welder works!</p>
 
+<p-toast />
+<div class="card">
+<p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="left">
+        <p-button 
+            pRipple 
+            severity="success" 
+            label="New" 
+            icon="pi pi-plus" 
+            class="mr-2" 
+            (click)="openNew()" />
+            <p-button
+            pButton 
+            pRipple 
+            icon="pi pi-trash" 
+            class="p-button-danger"
+            (click)="deleteSelectedWelders()" [disabled]="!selectedWelders || !selectedWelders.length"/> 
+            
+        </ng-template>
+    </p-toolbar> 
+
 <p-table 
    #dt2
    [value]="welders"
@@ -10,31 +31,22 @@
    [loading]="loading"
    [paginator]="true"
    [tableStyle]="{ 'min-width': '50rem' }"
-   [globalFilterFields]="['id', 'Super_First_name', 'Super_Surname', 'Super_mail', 'Desired_Job_Categor',
+   [globalFilterFields]="['id', 'Super_First_name', 'Super_Surname', 'Super_mail', 'Desired_Job_Category',
     'Desired_position', 'Super_Telephone', 'asap', 'Comment_1'
-   ]">
+   ]"
+   [(selection)]="selectedWelders"
+   [rowHover]="true"
+   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true" >
+  
    
-  <!-- <ng-template pTemplate="caption">
-    <div class="flex">
-       <p-iconField iconPosition="left" class="ml-auto">
-            <p-inputIcon>
-                <i class="pi pi-search"></i>
-            </p-inputIcon>  
-            <input 
-                pInputText 
-                type="text" 
-               (input)="dt2.filterGlobal($event.target.value, 'contains')" 
-                placeholder="Search keyword" />
-        </p-iconField>
-    </div> 
-</ng-template> -->
+   
    
 <ng-template pTemplate="caption">
     <div class="flex">
-        <p-iconField iconPosition="left" class="ml-auto">
-             <p-inputIcon>
+        <h5 class="p-m-0">Manage Welders</h5>
+            <span class="p-input-icon-left">
                  <i class="pi pi-search"></i>
-             </p-inputIcon>  
+            
         <input 
             pInputText 
             type="text" 
@@ -42,30 +54,142 @@
             placeholder="Search keyword" 
             style="width: 50%;"
         />
-    </p-iconField>
+    </span>
     </div>
 </ng-template>
    
    <ng-template pTemplate="header">
    <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Surname</th>
+    <th style="width: 3rem">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+    </th>
+    <th pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
+    <th pSortableColumn="Super_First_name">Name <p-sortIcon field="Super_First_name"></p-sortIcon></th>
+    <th pSortableColumn="Super_Surname">Surname <p-sortIcon field="Super_Surname"></p-sortIcon></th>
     <th>Email</th>
-    <th>Desired job Category</th>
-    <th>Desired position</th>
+    <th pSortableColumn="Desired_Job_Category">Desired job Category <p-sortIcon field="Desired_Job_Category"></p-sortIcon></th>
+    <th pSortableColumn="Desired_position">Desired position <p-sortIcon field="Desired_position"></p-sortIcon></th>
     <th>Telephone</th>
-    <th>ASAP</th>
+    <th pSortableColumn="asap">ASAP <p-sortIcon field="asap"></p-sortIcon></th>
     <th>Comment</th>
-    </tr>
-   
+    <th></th>
 
+</tr>
     </ng-template>
 
     <ng-template pTemplate="body" let-welder>
         <tr>
+            <td>
+                <p-tableCheckbox [value]="welder"></p-tableCheckbox>
+            </td>
+            <td>{{ welder.id }}</td>
+            <td>{{ welder.Super_First_name }}</td>
+            <td>{{ welder.Super_Surname }}</td>
+            <td>{{ welder.Super_mail }}</td>
+            <td>{{ welder.Desired_Job_Category }}</td>
+            <td>{{ welder.Desired_position }}</td>
+            <td>
+                <p-inputMask 
+                   mask="(999) 999-9999" 
+                   [(ngModel)]="welder.Super_Telephone"
+                   placeholder="(999) 999-9999" />
+            </td>
+            <td>
+                <input type="checkbox" [(ngModel)]="welder.asap" />
+            </td>
+            <td><textarea 
+                rows="3"
+                cols="30" 
+                pInputTextarea [(ngModel)]="welder.Comment_1"></textarea></td>
+
+            <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editProduct(welder)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(welder)"></button>
+            </td>
+    
+    </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{welders ? welders.length : 0 }} welders.
+            </div>
+        </ng-template>
+    </p-table>
+    </div>
+
+
+    <!-- Correct this code-->
+    <p-dialog 
+    [(visible)]="welderDialog" 
+    [style]="{ width: '450px' }" 
+    header="Welder Details" 
+    [modal]="true" 
+    styleClass="p-fluid">
+        <ng-template pTemplate="content">
+
+          <div class="p-field">
+            <label for="Super_First_name">FirstName</label>
+            <input type="text" pInputText id="Super_First_name" [(ngModel)]="welder.Super_First_name" required autofocus />
+                <small class="p-invalid" *ngIf="submitted && !welder.Super_First_name">Name is required.</small>
+         </div>
+        
+         <div class="p-field">
+            <label for="Super_Surname">Surname</label>
+            <input type="text" pInputText id="Super_Surname" [(ngModel)]="welder.Super_Surname" required />
+                <small class="p-invalid" *ngIf="submitted && !welder.Super_Surname">Surname is required.</small>
+         </div>
+
+         <div class="p-field">
+            <label for=" Super_mail">Email</label>
+            <input type="text" pInputText id=" Super_mail" [(ngModel)]="welder. Super_mail" />
+                <small class="p-invalid"></small>
+         </div>
+        
+         <div class="p-field">
+            <label for="Desired_Job_Category">Desired job category</label>
+            <textarea id="Desired_Job_Category" pInputTextarea [(ngModel)]="welder.Desired_Job_Category" required rows="3" cols="20"></textarea>
+        </div>
+        
+        <div class="p-field">
+            <label for="Desired_position">Desired position</label>
+            <textarea id="Desired_position" pInputTextarea [(ngModel)]="welder.Desired_position" required rows="3" cols="20"></textarea>
+        </div>
+
+        <div class="p-field">
+            <label for="Super_Telephone">Telephone</label>
+            <p-inputMask 
+            mask="(999) 999-9999" 
+            [(ngModel)]="welder.Super_Telephone"
+            placeholder="(999) 999-9999" />
+        </div>
+
+        <div class="p-field">
+            <label class="p-mb-3">asap</label>
+            <div class="p-formgrid p-grid">
+                <div class="p-field-radiobutton p-col-6">
+                   <p-checkbox [(ngModel)]="welder.asap" binary="true" inputId="binary" />
+                </div>
+            </div>
+        </div>
+         <div class="p-field">
+            <label for="Comment_1">Comment</label>
+            <textarea id="Comment_1" pInputTextarea [(ngModel)]="welder.Comment_1" required rows="3" cols="20"></textarea>
+        </div>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+                    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveWelder()"></button>
+                </ng-template>
+            </p-dialog>
+            
+            <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+
+   <!-- <ng-template pTemplate="body" let-welder>
+        <tr>
         <td>{{ welder.id }}</td>
-        <td>{{ welder.Super_First_name }}</td>
+        <td>{{welder.Super_First_name }}" /></td>
         <td>{{ welder.Super_Surname }}</td>
         <td>{{ welder.Super_mail }}</td>
         <td>{{ welder.Desired_Job_Category }}</td>
@@ -81,9 +205,32 @@
 
 </tr>
     </ng-template>
+
+    <ng-template pTemplate="body" let-welder>
+        <tr>
+            <td>{{ welder.id }}</td>
+            <td><input pInputText [(ngModel)]="welder.Super_First_name" /></td>
+            <td><input pInputText [(ngModel)]="welder.Super_Surname" /></td>
+            <td><input pInputText [(ngModel)]="welder.Super_mail" /></td>
+            <td><input pInputText [(ngModel)]="welder.Desired_Job_Category" /></td>
+            <td><input pInputText [(ngModel)]="welder.Desired_position" /></td>
+            <td><input pInputText [(ngModel)]="welder.Super_Telephone" /></td>
+            <td>
+                <input type="checkbox" [(ngModel)]="welder.asap" />
+            </td>
+            <td>
+                <textarea 
+                    rows="3"
+                    cols="30" 
+                    pInputTextarea [(ngModel)]="welder.Comment_1"></textarea>
+            </td>
+        </tr>
+    </ng-template>
+
     <ng-template pTemplate="emptymessage">
         <tr>
             <td colspan="9">No welders found.</td>
         </tr>
     </ng-template>
-    </p-table>
+  
+</p-table> -->
